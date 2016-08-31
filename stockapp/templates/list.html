@@ -1,0 +1,107 @@
+<html>
+  <head>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+{% if messages %}
+        {% for message in messages %}
+          {% if message.tags == "success" %}
+            <div class="alert alert-success fade in text-center">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              {{ message }}
+            </div>
+          {% else %}
+             <div class="alert alert-danger fade in text-center">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              {{ message }}
+            </div>
+          {% endif %}
+        {% endfor %}
+    {% endif %}
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Market Predict</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li ><a href="/stock/">Home</a></li>
+      <li><a href="/stock/list">List</a></li>
+      {% if user.is_authenticated %}
+        <li><a href="{%url 'logout' %}">Logout</a></li>
+      {% else %}
+        <li><a href="{%url 'login' %}">Login</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+<form id="form1" action="" method="post">{% csrf_token %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-sm-12 main">
+          <div class="col-md-12 page-header col-sm-12">
+            <div class="col-md-6 col-sm-6">
+              <h1>Stock List</h1>
+            </div>
+            
+          </div>
+          <div>
+            <input type="text" class="form-control" id="search"  placeholder="Search..."> <br>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped tab">
+              <thead class="thead-inverse">
+                <tr>
+                  <th>Stock Name</th>
+                  
+                </tr>
+              </thead>
+
+              <tbody>
+                {%for i in object_list%}
+                <tr data-id="{{i.id}}">
+                  <td>{{i.stock_name}}</td>
+                  
+                  <td><a href="/stock/{{i.id}}"><button class="btn btn-primary" type="button">View</button></a></td>
+                  
+                </tr>
+                {%endfor%}
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span class="step-links">
+              {% if object_list.has_previous %}
+              <a href="?page={{ object_list.previous_page_number }}">previous</a>
+              {% endif %}
+
+              <span class="current">
+                Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+              </span>
+
+              {% if object_list.has_next %}
+              <a href="?page={{ object_list.next_page_number }}">next</a>
+              {% endif %}
+            </span>
+          </div>  
+        </div>
+      </div>
+    </div>
+  </form>
+
+  
+  
+
+      <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/search.js"></script>
+    <script type="text/javascript">
+
+  
+    </script>
+  </body>
+</html>
+
